@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="segmentAccent" x1="266" y1="258" x2="770" y2="626" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#10D9A0"/>
+      <stop offset="1" stop-color="#138BFF"/>
+    </linearGradient>
+    <linearGradient id="segmentTrack" x1="390" y1="258" x2="796" y2="626" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F6FDFF" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#BCEFFF" stop-opacity="0.34"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <rect x="266" y="258" width="94" height="58" rx="22" fill="url(#segmentAccent)"/>
+    <rect x="392" y="258" width="356" height="58" rx="22" fill="url(#segmentTrack)"/>
+    <rect x="416" y="278" width="98" height="18" rx="9" fill="#10D9A0"/>
+
+    <rect x="266" y="362" width="94" height="58" rx="22" fill="url(#segmentAccent)"/>
+    <rect x="392" y="362" width="414" height="58" rx="22" fill="url(#segmentTrack)"/>
+    <rect x="416" y="382" width="98" height="18" rx="9" fill="#155EB8" opacity="0.72"/>
+
+    <rect x="266" y="466" width="94" height="58" rx="22" fill="url(#segmentAccent)"/>
+    <rect x="392" y="466" width="344" height="58" rx="22" fill="url(#segmentTrack)"/>
+    <rect x="416" y="486" width="98" height="18" rx="9" fill="#10D9A0"/>
+
+    <rect x="266" y="570" width="94" height="58" rx="22" fill="url(#segmentAccent)"/>
+    <rect x="392" y="570" width="392" height="58" rx="22" fill="url(#segmentTrack)"/>
+    <rect x="416" y="590" width="98" height="18" rx="9" fill="#155EB8" opacity="0.72"/>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="backgroundGradient" x1="170" y1="64" x2="854" y2="960" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#155EB8"/>
+      <stop offset="0.58" stop-color="#0D8EAA"/>
+      <stop offset="1" stop-color="#0AB892"/>
+    </linearGradient>
+    <linearGradient id="warmRefraction" x1="1000" y1="176" x2="24" y2="702" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFD06A" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#FF9F45" stop-opacity="0.72"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#backgroundGradient)"/>
+  <path d="M1024 86V356L0 750V500L1024 86Z" fill="url(#warmRefraction)"/>
+  <path d="M0 820L1024 424V548L0 944V820Z" fill="#FFFFFF" opacity="0.12"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="trayFill" x1="300" y1="774" x2="724" y2="846" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#063B73"/>
+      <stop offset="0.58" stop-color="#075A8F"/>
+      <stop offset="1" stop-color="#0D8EAA"/>
+    </linearGradient>
+  </defs>
+  <rect x="300" y="774" width="424" height="72" rx="36" fill="url(#trayFill)"/>
+  <rect x="350" y="799" width="84" height="22" rx="11" fill="#FFFFFF" opacity="0.46"/>
+  <rect x="470" y="799" width="84" height="22" rx="11" fill="#FFFFFF" opacity="0.46"/>
+  <rect x="590" y="799" width="84" height="22" rx="11" fill="#FFFFFF" opacity="0.46"/>
+</svg>
