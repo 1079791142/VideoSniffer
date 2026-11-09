@@ -6,7 +6,7 @@
 
 个人自用的 iOS 应用：**内置浏览器 + 网页视频嗅探 + 下载管理**。不需要上架 App Store，通过自由签名（Sideloadly）装到自己的 iPhone 上。
 
-> **当前状态（2026-11-06）**：仓库中已导入上游 [LSX-s-Software/M3U8-Downloader](https://github.com/LSX-s-Software/M3U8-Downloader) 完整 HLS 下载引擎（原样导入，未改动源码）。**浏览器与嗅探功能尚未实现**。详细的开发交接说明（架构、缺口清单、CI、验收标准）见 [Docs/HANDOFF.md](Docs/HANDOFF.md)。
+> **当前状态（2026-11-09）**：上游 [LSX-s-Software/M3U8-Downloader](https://github.com/LSX-s-Software/M3U8-Downloader) 的 HLS 下载引擎已原样导入；**内置浏览器（WKWebView + 浏览 / 下载双 Tab）与视频嗅探（JS 注入 + 消息回传）已实现，但尚未通过 CI 编译验证，也未在真机上实测**。工程清理与 GitHub Actions 工作流已就位。详细的开发交接说明（架构、缺口清单、CI、验收标准）见 [Docs/HANDOFF.md](Docs/HANDOFF.md)。
 
 ![上游 M3U8 Downloader 界面（下载管理部分）](Docs/demo.png)
 
@@ -27,12 +27,12 @@
 | 下载管理界面（列表 / 详情 / 设置 / 存储占用） | ✅ | 来自上游 |
 | SwiftData 任务模型与持久化 | ✅ | 来自上游 |
 | 简体中文 / 英文、深色模式 | ✅ | 来自上游 |
-| 内置浏览器（WKWebView） | ⬜ | 待开发 |
-| 视频嗅探（JS 注入 + 消息回传） | ⬜ | 待开发 |
+| 内置浏览器（WKWebView） | 🟡 | 已实现，未经 CI 验证 |
+| 视频嗅探（JS 注入 + 消息回传） | 🟡 | 已实现（HLS 可直接加入下载，MP4 仅列出），未经 CI 验证 |
 | Referer / Cookie / User-Agent 透传 | ⬜ | 待开发，防盗链站点需要 |
 | 直接下载 MP4（不走 HLS 分片） | ⬜ | 待开发 |
-| 工程清理（签名团队、Bundle ID、ATS、显示名） | ⬜ | 待开发 |
-| GitHub Actions 产出未签名 IPA | ⬜ | 待开发 |
+| 工程清理（签名团队、Bundle ID、ATS、显示名） | ✅ | Bundle ID `com.videosniffer.app`，显示名 VideoSniffer |
+| GitHub Actions 产出未签名 IPA | 🟡 | 工作流已提交，尚未跑过 |
 
 ## 环境要求
 
@@ -42,7 +42,7 @@
 
 ## 构建（无 Mac）
 
-构建完全交给 GitHub Actions。当前仓库为 **public**，Actions 额度免费。计划中的工作流 `.github/workflows/build.yml` 大致如下（尚未提交，细节见交接文档）：
+构建完全交给 GitHub Actions。当前仓库为 **public**，Actions 额度免费。[.github/workflows/build.yml](.github/workflows/build.yml) 在 `push` 到 `main`、每个 PR 以及手动 `workflow_dispatch` 时构建无签名 IPA，核心步骤：
 
 ```sh
 xcodebuild \
@@ -77,16 +77,18 @@ ditto -c -k --sequesterRsrc --keepParent Payload VideoSniffer-unsigned.ipa
 ```text
 VideoSniffer/
 ├── M3U8 Downloader/                 # App target（目录名沿用上游，暂未改名）
+│   ├── Browser/                     # 内置浏览器：WKWebView、地址栏、嗅探脚本与消息处理
 │   ├── Models/                      # SwiftData：DownloadJob / DownloadSegment 等
 │   ├── Services/                    # HLS 解析、分片下载、AES-128、组装、本地播放服务
 │   ├── Settings/                    # 并发 / 重试 / 超时 / 代理设置
 │   ├── Utilities/                   # 路径、Keychain、启动参数、示例数据等
 │   ├── Views/                       # 下载列表、详情、设置、播放器等
-│   ├── ContentView.swift            # 根视图（后续改为 浏览 / 下载 两个 Tab）
+│   ├── ContentView.swift            # 根视图：iOS 为 浏览 / 下载 两个 Tab
 │   ├── M3U8_DownloaderApp.swift     # @main 入口
 │   └── Localizable.xcstrings        # 中英文文案
-├── M3U8 DownloaderTests/            # 单元测试（HLS 解析、文件存储、删除、设置等）
-├── M3U8 DownloaderUITests/          # UI 测试（设置面板）
+├── .github/workflows/build.yml      # CI：构建无签名 IPA 并上传 artifact
+├── M3U8 DownloaderTests/            # 单元测试（HLS 解析、文件存储、删除、设置、嗅探数据校验等）
+├── M3U8 DownloaderUITests/          # UI 测试（切到下载 Tab 后打开设置面板）
 ├── M3U8 Downloader.xcodeproj/       # objectVersion 77，源码目录自动同步，新增 .swift 无需改工程文件
 ├── Docs/                            # 截图与文档
 ├── iOS-Info.plist                   # iOS 专用 Info.plist（含 ATS 配置）
