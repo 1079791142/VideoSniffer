@@ -15,29 +15,52 @@ struct ContentView: View {
 #endif
 
     var body: some View {
-        DownloadNavigationView(
-            jobs: jobs,
-            selectedCategory: $selectedCategory,
-            selectedJob: $selectedJob,
-            engine: engine,
-            isAddingDownload: $isAddingDownload,
-            isShowingSettings: isShowingSettingsBinding
-        )
-            .task {
-                if engine == nil {
-                    engine = DownloadEngine(modelContext: modelContext, settings: settings, mode: runtimeMode)
+        Group {
+#if os(iOS)
+            TabView {
+                Tab(.browser, systemImage: "safari") {
+                    BrowserView(engine: engine)
                 }
-            }
-            .sheet(isPresented: $isAddingDownload) {
-                if let engine {
-                    AddDownloadView(engine: engine)
+                .accessibilityIdentifier("browserTab")
+
+                Tab(.downloads, systemImage: "arrow.down.circle") {
+                    DownloadNavigationView(
+                        jobs: jobs,
+                        selectedCategory: $selectedCategory,
+                        selectedJob: $selectedJob,
+                        engine: engine,
+                        isAddingDownload: $isAddingDownload,
+                        isShowingSettings: isShowingSettingsBinding
+                    )
                 }
+                .accessibilityIdentifier("downloadsTab")
             }
+#else
+            DownloadNavigationView(
+                jobs: jobs,
+                selectedCategory: $selectedCategory,
+                selectedJob: $selectedJob,
+                engine: engine,
+                isAddingDownload: $isAddingDownload,
+                isShowingSettings: isShowingSettingsBinding
+            )
+#endif
+        }
+        .task {
+            if engine == nil {
+                engine = DownloadEngine(modelContext: modelContext, settings: settings, mode: runtimeMode)
+            }
+        }
+        .sheet(isPresented: $isAddingDownload) {
+            if let engine {
+                AddDownloadView(engine: engine)
+            }
+        }
 #if !os(macOS)
-            .sheet(isPresented: $isShowingSettings) {
-                SettingsView(engine: engine)
-                    .environment(settings)
-            }
+        .sheet(isPresented: $isShowingSettings) {
+            SettingsView(engine: engine)
+                .environment(settings)
+        }
 #endif
     }
 

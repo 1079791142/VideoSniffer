@@ -28,6 +28,12 @@ final class M3U8_DownloaderUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
+        // The app now opens on the Browser tab, so reach the Downloads tab first
+        // by its stable identifier instead of relying on the localized title.
+        let downloadsTab = app.buttons["downloadsTab"]
+        XCTAssertTrue(downloadsTab.waitForExistence(timeout: 5))
+        downloadsTab.click()
+
         app.buttons["Settings"].click()
         XCTAssertTrue(app.staticTexts["Settings"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.buttons["Done"].exists)
